@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
@@ -8,9 +8,26 @@ import { useSelectedLayoutSegment } from 'next/navigation';
 import useScroll from '@/hooks/useScroll';
 import { cn } from '@/lib/utils';
 
-const Header = () => {
+const Header = ({ isMobile: mobile }: { isMobile: boolean }) => {
   const scrolled = useScroll(5);
   const selectedLayout = useSelectedLayoutSegment();
+  const [isMobile, setIsMobile] = useState(mobile);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isMobile]);
 
   return (
     <div
@@ -26,14 +43,16 @@ const Header = () => {
         <div className="flex items-center space-x-4">
           <Link
             href="/"
-            className="flex flex-row space-x-3 items-center justify-center md:hidden"
+            className={`flex flex-row space-x-3 items-center justify-center ${
+              isMobile ? '' : 'hidden'
+            }`}
           >
             <span className="h-7 w-7 bg-zinc-300 rounded-lg" />
-            <span className="font-bold text-xl flex ">Logo</span>
+            <span className="font-bold text-xl flex">Logo</span>
           </Link>
         </div>
 
-        <div className="hidden md:block">
+        <div className={`${isMobile ? 'hidden' : 'block'}`}>
           <div className="h-8 w-8 rounded-full bg-zinc-300 flex items-center justify-center text-center">
             <span className="font-semibold text-sm">HQ</span>
           </div>

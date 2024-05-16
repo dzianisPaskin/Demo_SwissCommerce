@@ -47,18 +47,35 @@ const sidebar = {
   },
 };
 
-const HeaderMobile = () => {
+const HeaderMobile = ({ isMobile: mobile }: { isMobile: boolean }) => {
   const pathname = usePathname();
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
   const [isOpen, toggleOpen] = useCycle(false, true);
+  const [isMobile, setIsMobile] = useState(mobile);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isMobile]);
 
   return (
     <motion.nav
       initial={false}
       animate={isOpen ? 'open' : 'closed'}
       custom={height}
-      className={`fixed inset-0 z-50 w-full md:hidden ${
+      className={`fixed inset-0 z-50 w-full ${isMobile ? '' : 'hidden'}  ${
         isOpen ? '' : 'pointer-events-none'
       }`}
       ref={containerRef}

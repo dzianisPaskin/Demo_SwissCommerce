@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -9,19 +9,49 @@ import { SIDENAV_ITEMS } from '@/constants';
 import { SideNavItem } from '@/types';
 import { Icon } from '@iconify/react';
 
-const SideNav = () => {
+const SideNav = ({ isMobile: mobile }: { isMobile: boolean }) => {
+  const [isMobile, setIsMobile] = useState(mobile);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isMobile]);
+
   return (
-    <div className="md:w-60 bg-white h-screen flex-1 fixed border-r border-zinc-200 hidden md:flex">
+    <div
+      className={`bg-white h-screen flex-1 fixed border-r border-zinc-200 ${
+        isMobile ? 'hidden' : 'w-60 flex'
+      } `}
+    >
       <div className="flex flex-col space-y-6 w-full">
         <Link
           href="/"
-          className="flex flex-row space-x-3 items-center justify-center md:justify-start md:px-6 border-b border-zinc-200 h-12 w-full"
+          className={`${
+            isMobile ? 'justify-center' : 'justify-start px-6'
+          } flex flex-row space-x-3 items-center  border-b border-zinc-200 h-12 w-full`}
         >
           <span className="h-7 w-7 bg-zinc-300 rounded-lg" />
-          <span className="font-bold text-xl hidden md:flex">Logo</span>
+          <span
+            className={`${
+              isMobile ? 'hidden' : 'flex'
+            } placeholder:font-bold text-xl`}
+          >
+            Logo
+          </span>
         </Link>
 
-        <div className="flex flex-col space-y-2  md:px-6 ">
+        <div className={`flex flex-col space-y-2 ${!isMobile && 'px-6'}`}>
           {SIDENAV_ITEMS.map((item, idx) => {
             return <MenuItem key={idx} item={item} />;
           })}
