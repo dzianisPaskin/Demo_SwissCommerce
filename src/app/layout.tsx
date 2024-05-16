@@ -3,11 +3,11 @@ import '../styles/globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
-import Header from '@/components/header';
-import HeaderMobile from '@/components/header-mobile';
-import MarginWidthWrapper from '@/components/margin-width-wrapper';
-import PageWrapper from '@/components/page-wrapper';
-import SideNav from '@/components/side-nav';
+import Header from '@/components/HeaderDesktop';
+import HeaderMobile from '@/components/HeaderMobile';
+import MarginWidthWrapper from '@/components/MarginWidthWrapper';
+import PageWrapper from '@/components/PageWrapper';
+import SideNav from '@/components/SideNav';
 
 const inter = Inter({ subsets: ['latin'] });
 
