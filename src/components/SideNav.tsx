@@ -42,11 +42,7 @@ const SideNav = ({ isMobile: mobile }: { isMobile: boolean }) => {
           } flex flex-row space-x-3 items-center  border-b border-zinc-200 h-12 w-full`}
         >
           <span className="h-7 w-7 bg-zinc-300 rounded-lg" />
-          <span
-            className={`${
-              isMobile ? 'hidden' : 'flex'
-            } placeholder:font-bold text-xl`}
-          >
+          <span className={`${isMobile ? 'hidden' : 'flex'} font-bold text-xl`}>
             Logo
           </span>
         </Link>
