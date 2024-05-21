@@ -25,7 +25,8 @@ export default async function RootLayout({
 }) {
   const { isMobile } = await detectDevice();
 
-  const Component = isMobile ? DesktopComponent : MobileComponent;
+  const Component = isMobile ? MobileComponent : DesktopComponent;
+  console.log('isMobile', isMobile);
 
   return (
     <html lang="en">
