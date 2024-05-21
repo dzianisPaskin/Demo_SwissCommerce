@@ -5,12 +5,14 @@ import React from 'react';
 import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import useScroll from '@/hooks/useScroll';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/utils';
 
-const Header = () => {
+export const Header = () => {
   const scrolled = useScroll(5);
   const selectedLayout = useSelectedLayoutSegment();
+  const mdScreen = useMediaQuery('md');
 
   return (
     <div
@@ -26,14 +28,16 @@ const Header = () => {
         <div className="flex items-center space-x-4">
           <Link
             href="/"
-            className="flex flex-row space-x-3 items-center justify-center md:hidden"
+            className={`flex-row space-x-3 items-center justify-center ${
+              mdScreen ? 'flex' : 'hidden'
+            }`}
           >
             <span className="h-7 w-7 bg-zinc-300 rounded-lg" />
             <span className="font-bold text-xl flex ">Logo</span>
           </Link>
         </div>
 
-        <div className="hidden md:block">
+        <div className={`${mdScreen ? 'hidden' : 'block'}`}>
           <div className="h-8 w-8 rounded-full bg-zinc-300 flex items-center justify-center text-center">
             <span className="font-semibold text-sm">HQ</span>
           </div>
@@ -42,5 +46,3 @@ const Header = () => {
     </div>
   );
 };
-
-export default Header;

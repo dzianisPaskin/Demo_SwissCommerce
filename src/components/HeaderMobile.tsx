@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { SIDENAV_ITEMS } from '@/constants';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { SideNavItem } from '@/types';
 import { Icon } from '@iconify/react';
 import { motion, MotionProps, useCycle } from 'framer-motion';
@@ -47,18 +48,19 @@ const sidebar = {
   },
 };
 
-const HeaderMobile = () => {
+export const HeaderMobile = () => {
   const pathname = usePathname();
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
   const [isOpen, toggleOpen] = useCycle(false, true);
+  const mdScreen = useMediaQuery('md');
 
   return (
     <motion.nav
       initial={false}
       animate={isOpen ? 'open' : 'closed'}
       custom={height}
-      className={`fixed inset-0 z-50 w-full md:hidden ${
+      className={`fixed inset-0 z-50 w-full ${mdScreen ? 'fixed' : 'hidden'} ${
         isOpen ? '' : 'pointer-events-none'
       }`}
       ref={containerRef}
@@ -103,8 +105,6 @@ const HeaderMobile = () => {
     </motion.nav>
   );
 };
-
-export default HeaderMobile;
 
 const MenuToggle: React.FC<MenuToggleProps> = ({ toggle }) => (
   <button

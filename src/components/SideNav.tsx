@@ -6,22 +6,29 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { SIDENAV_ITEMS } from '@/constants';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { SideNavItem } from '@/types';
 import { Icon } from '@iconify/react';
 
-const SideNav = () => {
+export const SideNav = () => {
+  const mdScreen = useMediaQuery('md');
+
   return (
     <div className="md:w-60 bg-white h-screen flex-1 fixed border-r border-zinc-200 hidden md:flex">
       <div className="flex flex-col space-y-6 w-full">
         <Link
           href="/"
-          className="flex flex-row space-x-3 items-center justify-center md:justify-start md:px-6 border-b border-zinc-200 h-12 w-full"
+          className={`flex flex-row space-x-3 items-center  md:justify-start md:px-6 border-b border-zinc-200 h-12 w-full   ${
+            mdScreen ? 'justify-start px-6' : 'justify-center px-0'
+          }`}
         >
           <span className="h-7 w-7 bg-zinc-300 rounded-lg" />
-          <span className="font-bold text-xl hidden md:flex">Logo</span>
+          <span className={`font-bold text-xl ${mdScreen ? 'hidden' : 'flex'}`}>
+            Logo
+          </span>
         </Link>
 
-        <div className="flex flex-col space-y-2  md:px-6 ">
+        <div className={`flex flex-col space-y-2 ${!mdScreen && 'px-6'} `}>
           {SIDENAV_ITEMS.map((item, idx) => {
             return <MenuItem key={idx} item={item} />;
           })}
@@ -30,8 +37,6 @@ const SideNav = () => {
     </div>
   );
 };
-
-export default SideNav;
 
 const MenuItem = ({ item }: { item: SideNavItem }) => {
   const pathname = usePathname();
