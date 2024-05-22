@@ -12,24 +12,26 @@ export const useMediaQuery = (mediaQuery: keyof typeof mediaQueryMap) => {
 
   // 1. Create a MediaQueryList based on the provided media query.
   useEffect(() => {
-    const query = mediaQueryMap[mediaQuery];
+    if (typeof window !== 'undefined') {
+      // Don't run on the server if window is undefined on the server
 
-    if (!query) {
-      console.error(`Invalid instruction: ${mediaQuery}`);
-      return;
+      const query = mediaQueryMap[mediaQuery];
+
+      if (!query) {
+        console.error(`Invalid instruction: ${mediaQuery}`);
+        return;
+      }
+      const list = window.matchMedia(query);
+      setMediaQueryList(list);
+      setIsMatch(list.matches);
     }
-    const list = window.matchMedia(query);
-    setMediaQueryList(list);
-    setIsMatch(list.matches);
   }, [mediaQuery]);
 
   // 2. Listen for changes in the media query.
-  useEventListener(
+  useEventListener<MediaQueryListEvent>(
     'change',
-    (event: Event) => {
-      if (event instanceof MediaQueryListEvent) {
-        setIsMatch(event.matches); // Update match status when the query changes.
-      }
+    (event) => {
+      setIsMatch(event.matches);
     },
     mediaQueryList,
   );

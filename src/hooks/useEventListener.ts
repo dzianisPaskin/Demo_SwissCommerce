@@ -1,26 +1,24 @@
 import { useEffect, useRef } from 'react';
 
-export const useEventListener = (
+export const useEventListener = <T extends Event>(
   eventType: string,
-  callback: (event: Event) => void,
-  element: MediaQueryList | null,
+  handler: (event: T) => void,
+  element: Window | EventTarget | null = typeof window !== 'undefined'
+    ? window
+    : null,
 ) => {
-  const callbackRef = useRef(callback);
+  const callbackRef = useRef(handler);
 
-  // Store the callback function in a ref to avoid unnecessary re-renders.
   useEffect(() => {
-    callbackRef.current = callback;
-  }, [callback]);
+    callbackRef.current = handler;
+  }, [handler]);
 
-  // Attach the event listener and handle cleanup.
   useEffect(() => {
     if (element == null) return;
+    const handler = (e: T) => callbackRef.current(e);
+    element.addEventListener(eventType, handler as EventListener);
 
-    const handler = (e: Event) => callbackRef.current(e);
-    element.addEventListener(eventType, handler);
-
-    return () => {
-      if (element) element.removeEventListener(eventType, handler);
-    };
+    return () =>
+      element.removeEventListener(eventType, handler as EventListener);
   }, [eventType, element]);
 };
