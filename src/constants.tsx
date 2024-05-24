@@ -35,6 +35,16 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
     ],
   },
   {
+    title: 'Icons',
+    path: '/icons',
+    icon: <Icon icon="lucide:images" width="24" height="24" />,
+    submenu: true,
+    subMenuItems: [
+      { title: 'All', path: '/icons' },
+      { title: 'Organize icons', path: '/icons/organize' },
+    ],
+  },
+  {
     title: 'Help',
     path: '/help',
     icon: <Icon icon="lucide:help-circle" width="24" height="24" />,
