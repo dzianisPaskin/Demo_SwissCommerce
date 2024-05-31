@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 
-import { Icons } from '@/assets/icons';
 import flashlight from '@/assets/images/flashlight.png';
 
 import { Icon } from './Icon';
