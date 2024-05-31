@@ -9,7 +9,7 @@ export function Icon({
 }) {
   return (
     <svg className={`inline self-center ${className}`}>
-      <use xlinkHref={`./icons/sprite.svg#${name}`} />
+      <use href={`./icons/sprite.svg#${name}`} />
     </svg>
   );
 }
